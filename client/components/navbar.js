@@ -1,8 +1,8 @@
-import React from 'react'
 import PropTypes from 'prop-types'
+import React from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
-import {logout} from '../store'
+import {requestLobbyInfo} from '../store'
 
 const Navbar = ({handleClick, isLoggedIn}) => (
   <div>
@@ -21,6 +21,9 @@ const Navbar = ({handleClick, isLoggedIn}) => (
           {/* The navbar will show these links before you log in */}
           <Link to="/login">Login</Link>
           <Link to="/signup">Sign Up</Link>
+          <a href="#" onClick={handleClick}>
+            GetLobbyInfo
+          </a>
         </div>
       )}
     </nav>
@@ -33,14 +36,14 @@ const Navbar = ({handleClick, isLoggedIn}) => (
  */
 const mapState = state => {
   return {
-    isLoggedIn: !!state.user.id
+    isLoggedIn: false
   }
 }
 
 const mapDispatch = dispatch => {
   return {
     handleClick() {
-      dispatch(logout())
+      requestLobbyInfo()
     }
   }
 }
