@@ -8,7 +8,6 @@ module.exports = io => {
     totalConnected++
 
     socket.on('req_lobby_info', () => {
-      console.log('requested info')
       socket.emit('res_lobby_info', {
         total: totalConnected,
         rooms: rooms.basicInfo()
@@ -19,6 +18,11 @@ module.exports = io => {
     // so we don't overwrite any internals
     // I checked already, this is unused
     socket.data.name = genName()
+    socket.on('req_user_info', () => {
+      socket.emit('res_user_info', {
+        name: socket.data.name
+      })
+    })
 
     socket.on('disconnect', () => {
       totalConnected--
