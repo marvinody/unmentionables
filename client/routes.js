@@ -7,10 +7,6 @@ import Lobby from './components/Lobby'
  * COMPONENT
  */
 class Routes extends Component {
-  componentDidMount() {
-    this.props.loadInitialData()
-  }
-
   render() {
     return (
       <Switch>

@@ -11,12 +11,7 @@ export class Lobby extends React.Component {
     console.log('loaded:', this.props.isLoaded)
     console.log('props:', this.props)
     if (!this.props.isLoaded) {
-      return (
-        <div>
-          {this.props.isLoaded ? 'yo' : 'bad'}
-          Loading...
-        </div>
-      )
+      return <div>Loading...</div>
     }
     return (
       <div>
