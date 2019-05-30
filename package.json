@@ -1,7 +1,7 @@
 {
-  "name": "boilermaker",
+  "name": "cubestory",
   "version": "2.0.0",
-  "description": "Some boilerplate code to get you started - get shakin'!",
+  "description": "A stackathon attempt at an turn-based imaginative game",
   "engines": {
     "node": ">= 7.0.0"
   },
@@ -38,7 +38,7 @@
       "git add"
     ]
   },
-  "author": "Fullstack Academy of Code",
+  "author": "Manuel Bugalo",
   "license": "MIT",
   "dependencies": {
     "axios": "^0.18.0",
