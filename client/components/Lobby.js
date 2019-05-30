@@ -7,15 +7,27 @@ import {requestLobbyInfo, requestUserInfo} from '../store'
  */
 export class Lobby extends React.Component {
   render() {
-    console.log('rendering')
-    console.log('loaded:', this.props.isLoaded)
-    console.log('props:', this.props)
     if (!this.props.isLoaded) {
       return <div>Loading...</div>
     }
+    const {user, lobby} = this.props
     return (
       <div>
-        <h3>Welcome, {this.props.user.name}</h3>
+        <h3>Welcome, {user.name}</h3>
+        <h4>{lobby.total} players online</h4>
+        <div className="room wrapper">
+          <div className="room count">{lobby.rooms.length} room(s)</div>
+          <div className="room list">
+            {lobby.rooms.map(room => (
+              <div className="room info" key={room.id}>
+                <span className="room name">{room.name}</span>
+                <span className="room count">
+                  {room.playerCount}/{room.size}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     )
   }
