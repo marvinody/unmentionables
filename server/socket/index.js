@@ -49,6 +49,13 @@ module.exports = io => {
       rooms.removePlayer(socket, id)
     })
 
+    socket.on('req_room_message_create', text => {
+      if (!socket.data.room) {
+        return
+      }
+      socket.data.room.addMessage(text, socket.data.name)
+    })
+
     socket.on('disconnect', () => {
       totalConnected--
       if (socket.data.room) {

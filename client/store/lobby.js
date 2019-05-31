@@ -47,6 +47,9 @@ export const requestLobbyInfo = () => {
 export const requestLobbyCreate = info => {
   socket.emit('req_lobby_create', info)
 }
+export const requestRoomMessageCreate = text => {
+  socket.emit('req_room_message_create', text)
+}
 
 /**
  * REDUCER

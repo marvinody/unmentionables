@@ -2,6 +2,7 @@ import {
   Box,
   Fab,
   Grid,
+  IconButton,
   Input,
   List,
   ListItemText,
@@ -9,12 +10,16 @@ import {
 } from '@material-ui/core'
 import ListItem from '@material-ui/core/ListItem'
 import {makeStyles} from '@material-ui/core/styles'
+import AddIcon from '@material-ui/icons/Add'
 import NavBackIcon from '@material-ui/icons/NavigateBefore'
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import {connect} from 'react-redux'
 import history from '../history'
-import {requestRoomJoin, requestRoomLeave} from '../store'
-
+import {
+  requestRoomJoin,
+  requestRoomLeave,
+  requestRoomMessageCreate
+} from '../store'
 /**
  * COMPONENT
  */
@@ -25,6 +30,7 @@ const useStyles = makeStyles(theme => ({
   paper: {
     padding: theme.spacing(2),
     margin: 'auto',
+    marginTop: theme.spacing(2),
     maxWidth: 800
   },
   fab: {
@@ -42,6 +48,7 @@ export const Room = props => {
   useEffect(() => {
     requestRoomJoin(props.match.params.id)
   }, [])
+  const [text, setText] = useState('')
   if (!props.id) {
     return <div>Loading room...</div>
   }
@@ -63,18 +70,18 @@ export const Room = props => {
               <NavBackIcon />
             </Fab>
           </Grid>
-          <Grid item xs={11} md={5} container direction="row">
+          <Grid item xs={11} container direction="row">
             <Grid item container xs={12} direction="row">
-              <Grid item xs={6}>
-                {props.name}
+              <Grid item xs={4}>
+                <p>{props.name}</p>
               </Grid>
-              <Grid item xs={6} container>
-                <Grid xs={12} item>
+              <Grid xs={4} item>
+                <p>
                   {props.players.length}/{props.size} players
-                </Grid>
-                <Grid xs={12} item>
-                  {props.spectators.length} spectators
-                </Grid>
+                </p>
+              </Grid>
+              <Grid xs={4} item>
+                <p>{props.spectators.length} spectators</p>
               </Grid>
             </Grid>
             <Grid container item xs={12}>
@@ -96,7 +103,11 @@ export const Room = props => {
               </Grid>
             </Grid>
           </Grid>
-          <Grid item xs={12} md={5} container>
+        </Grid>
+      </Paper>
+      <Paper className={classes.paper}>
+        <Grid container spacing={2}>
+          <Grid item xs={12} container>
             <span>Chat</span>
             <Box>
               <ul className={classes.ul}>
@@ -108,13 +119,28 @@ export const Room = props => {
                   )
                 })}
               </ul>
-              <Input multiline />
+              <form onSubmit={e => handleSubmit(e, text, setText)}>
+                <Input
+                  name="text"
+                  value={text}
+                  onChange={e => setText(e.target.value)}
+                />
+                <IconButton type="submit">
+                  <AddIcon fontSize="small" />
+                </IconButton>
+              </form>
             </Box>
           </Grid>
         </Grid>
       </Paper>
     </div>
   )
+}
+
+const handleSubmit = (event, text, setText) => {
+  event.preventDefault()
+  requestRoomMessageCreate(text)
+  setText('')
 }
 
 /**
