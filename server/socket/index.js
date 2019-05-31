@@ -33,6 +33,7 @@ module.exports = io => {
     socket.on('req_lobby_create', info => {
       const room = rooms.newRoom(info)
       socket.emit('res_lobby_create', room.basicInfo())
+      io.to('lobby').emit('lobby_room_create', room.basicInfo())
     })
 
     socket.on('req_room_join', id => {
@@ -45,22 +46,14 @@ module.exports = io => {
     })
 
     socket.on('req_room_leave', id => {
-      console.log('leaving room')
-      const room = rooms.findById(id)
-      if (!room) {
-        return socket.emit(
-          'err',
-          'Could not leave requested room because it doesn not exist'
-        )
-      }
-      room.removePlayer(socket)
+      rooms.removePlayer(socket, id)
     })
 
     socket.on('disconnect', () => {
       totalConnected--
       if (socket.data.room) {
         // some cleanup
-        socket.data.room.removePlayer(socket)
+        rooms.removePlayer(socket, socket.data.room.id)
       }
       console.log(`Connection ${socket.id} has left the building`)
     })

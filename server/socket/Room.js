@@ -31,8 +31,12 @@ module.exports = function(io) {
       socket.data.timeJoinedRoom = Date.now()
       socket.emit('res_room_join', this.expandedInfo())
       socket.to(this.uniqueName).emit('room_player_update', this.expandedInfo())
+      io.to('lobby').emit('lobby_room_update', this.basicInfo())
     }
-
+    // returns true if no more players in room
+    // false otherwise
+    // if empty, need to be deleted manually and everyone informed
+    // this only informs if >0 players in room
     removePlayer(socket) {
       console.log('removing player')
       const isPlayer = this.players[socket.id] !== undefined
@@ -49,6 +53,9 @@ module.exports = function(io) {
       delete socket.data.timeJoinedRoom
       // tell everyone else that room has changed
       socket.to(this.uniqueName).emit('room_player_update', this.expandedInfo())
+      io.to('lobby').emit('lobby_room_update', this.basicInfo())
+      console.log('this:', this)
+      return Object.keys(this.players).length === 0
     }
 
     // this should only be called when a player leaves
@@ -102,16 +109,40 @@ module.exports = function(io) {
     constructor() {
       this.rooms = {}
     }
+
     basicInfo() {
       return Object.keys(this.rooms).map(k => this.rooms[k].basicInfo())
     }
+
     newRoom(info) {
       const room = new Room(info.name, info.size)
       this.rooms[room.id] = room
       return room
     }
+
     findById(id) {
       return this.rooms[id]
+    }
+
+    removeRoom(id) {
+      delete this.rooms[id]
+      io.to('lobby').emit('lobby_room_remove', id)
+    }
+
+    // utility to remove and delete room if needed
+    removePlayer(socket, id) {
+      const room = this.findById(id)
+      if (!room) {
+        return socket.emit(
+          'err',
+          'Could not leave requested room because it doesn not exist'
+        )
+      }
+      const isEmpty = room.removePlayer(socket)
+      console.log('isEmpty:', isEmpty)
+      if (isEmpty) {
+        this.removeRoom(room.id)
+      }
     }
   }
   return {

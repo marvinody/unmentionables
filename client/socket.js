@@ -1,6 +1,11 @@
 import io from 'socket.io-client'
 import history from './history'
-import store, {createSingleLobby, roomUpdate} from './store'
+import store, {
+  createSingleLobby,
+  removeSingleLobby,
+  roomUpdate,
+  updateSingleLobby
+} from './store'
 import {loadLobbyInfo, loadUserInfo} from './store/'
 const socket = io(window.location.origin)
 
@@ -30,6 +35,14 @@ socket.on('connect', () => {
   * */
   socket.on('lobby_room_create', room => {
     store.dispatch(createSingleLobby(room))
+  })
+
+  socket.on('lobby_room_remove', id => {
+    store.dispatch(removeSingleLobby(id))
+  })
+
+  socket.on('lobby_room_update', room => {
+    store.dispatch(updateSingleLobby(room))
   })
 
   socket.on('room_player_update', room => {

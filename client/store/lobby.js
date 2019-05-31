@@ -5,6 +5,7 @@ import socket from '../socket'
 const LOAD_LOBBY_INFO = 'LOAD_LOBBY_INFO'
 const UPDATE_SINGLE_LOBBY = 'UPDATE_SINGLE_LOBBY'
 const CREATE_SINGLE_LOBBY = 'CREATE_SINGLE_LOBBY'
+const REMOVE_SINGLE_LOBBY = 'REMOVE_SINGLE_LOBBY'
 
 /**
  * INITIAL STATE
@@ -32,6 +33,11 @@ export const createSingleLobby = room => ({
   type: CREATE_SINGLE_LOBBY
 })
 
+export const removeSingleLobby = id => ({
+  id,
+  type: REMOVE_SINGLE_LOBBY
+})
+
 /**
  * THUNK CREATORS
  */
@@ -55,7 +61,7 @@ export default function(state = initialState, action) {
     case UPDATE_SINGLE_LOBBY:
       return {
         ...state,
-        rooms: state.lobby.rooms.map(room => {
+        rooms: state.rooms.map(room => {
           if (room.id === action.room.id) {
             return action.room
           }
@@ -66,6 +72,11 @@ export default function(state = initialState, action) {
       return {
         ...state,
         rooms: [action.room, ...state.rooms]
+      }
+    case REMOVE_SINGLE_LOBBY:
+      return {
+        ...state,
+        rooms: state.rooms.filter(r => r.id !== action.id)
       }
     default:
       return state
