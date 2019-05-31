@@ -8,6 +8,8 @@ module.exports = io => {
     // update total count for lobby stats
     totalConnected++
 
+    socket.join('lobby')
+
     socket.on('req_lobby_info', () => {
       socket.emit('res_lobby_info', {
         total: totalConnected,
@@ -26,7 +28,11 @@ module.exports = io => {
     })
 
     socket.on('req_lobby_create', info => {
-      rooms.newRoom(info).addHost(socket)
+      socket.leave('lobby')
+      const room = rooms.newRoom(info)
+      room.addHost(socket)
+      // and let's update everyone in the lobby that new room has been created
+      io.to('lobby').emit('lobby_room_create', room.basicInfo())
     })
 
     socket.on('disconnect', () => {

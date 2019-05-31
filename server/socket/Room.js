@@ -10,11 +10,13 @@ class Room {
     this.name = name
     this.id = id()
     this.size = Math.max(MIN_PLAYERS, Math.min(MAX_PLAYERS, size))
+    this.uniqueName = `room-#${this.id}`
   }
 
   addHost(socket) {
     this.addPlayer(socket)
     this.host = socket
+    socket.join(this.uniqueName)
   }
 
   addPlayer(socket) {
