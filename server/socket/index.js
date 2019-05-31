@@ -26,7 +26,7 @@ module.exports = io => {
     })
 
     socket.on('req_lobby_create', info => {
-      console.log('creating a room with:', info)
+      rooms.newRoom(info).addHost(socket)
     })
 
     socket.on('disconnect', () => {

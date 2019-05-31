@@ -67,6 +67,8 @@ export const CreateRoom = props => {
             name: roomName,
             size
           })
+          setRoomName('')
+          setSize('')
         }}
         disabled={!canClick}
         color="primary"
