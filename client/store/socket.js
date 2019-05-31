@@ -28,6 +28,9 @@ export const loadLobbyInfo = info => ({
 export const requestLobbyInfo = () => {
   socket.emit('req_lobby_info')
 }
+export const requestLobbyCreate = info => {
+  socket.emit('req_lobby_create', info)
+}
 
 /**
  * REDUCER

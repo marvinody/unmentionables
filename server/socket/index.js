@@ -25,6 +25,10 @@ module.exports = io => {
       })
     })
 
+    socket.on('req_lobby_create', info => {
+      console.log('creating a room with:', info)
+    })
+
     socket.on('disconnect', () => {
       totalConnected--
       console.log(`Connection ${socket.id} has left the building`)

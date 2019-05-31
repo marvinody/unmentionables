@@ -41,6 +41,8 @@
   "author": "Manuel Bugalo",
   "license": "MIT",
   "dependencies": {
+    "@material-ui/core": "^4.0.1",
+    "@material-ui/icons": "^4.0.1",
     "axios": "^0.18.0",
     "compression": "^1.7.3",
     "connect-session-sequelize": "^6.0.0",
