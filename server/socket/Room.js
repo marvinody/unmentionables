@@ -14,15 +14,57 @@ module.exports = function(io) {
       this.uniqueName = `room-#${this.id}`
     }
 
+    // TODO - check if game in progress, if yes add to spectator
     addPlayer(socket) {
-      if (Object.keys(this.players).length === 0) {
+      const numPlayers = Object.keys(this.players).length
+      if (numPlayers === 0) {
         this.host = socket
+        this.players[socket.id] = socket
+      } else if (numPlayers === this.size) {
+        this.spectators[socket.id] = socket
+      } else {
+        this.players[socket.id] = socket
       }
-      this.players[socket.id] = socket
+      socket.leave('lobby')
       socket.join(this.uniqueName)
       socket.data.room = this
+      socket.data.timeJoinedRoom = Date.now()
       socket.emit('res_room_join', this.expandedInfo())
-      // socket.to(room.uniqueName).emit('')
+      socket.to(this.uniqueName).emit('room_player_update', this.expandedInfo())
+    }
+
+    removePlayer(socket) {
+      console.log('removing player')
+      const isPlayer = this.players[socket.id] !== undefined
+      const isSpectator = this.spectators[socket.id] !== undefined
+      if (isPlayer) {
+        delete this.players[socket.id]
+        this.upgradeSpectator()
+      } else if (isSpectator) {
+        delete this.spectators[socket.id]
+      }
+      socket.leave(this.uniqueName)
+      socket.join('lobby')
+      delete socket.data.room
+      delete socket.data.timeJoinedRoom
+      // tell everyone else that room has changed
+      socket.to(this.uniqueName).emit('room_player_update', this.expandedInfo())
+    }
+
+    // this should only be called when a player leaves
+    // TODO - check if game is in progress, if yes, do nothing
+    upgradeSpectator() {
+      const spectKeys = Object.keys(this.spectators)
+      if (spectKeys.length === 0) {
+        // nothing to do
+        return
+      }
+      const oldestSpectator = spectKeys
+        .map(k => this.spectators[k])
+        .sort((a, b) => a.data.timeJoinedRoom - b.data.timeJoinedRoom)[0]
+
+      delete this.spectators[oldestSpectator.id]
+      this.players[oldestSpectator.id] = oldestSpectator
     }
 
     expandedInfo() {

@@ -31,6 +31,9 @@ export const roomUpdate = room => ({
 export const requestRoomJoin = id => {
   socket.emit('req_room_join', id)
 }
+export const requestRoomLeave = id => {
+  socket.emit('req_room_leave', id)
+}
 
 /**
  * REDUCER

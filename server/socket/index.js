@@ -44,8 +44,24 @@ module.exports = io => {
       room.addPlayer(socket)
     })
 
+    socket.on('req_room_leave', id => {
+      console.log('leaving room')
+      const room = rooms.findById(id)
+      if (!room) {
+        return socket.emit(
+          'err',
+          'Could not leave requested room because it doesn not exist'
+        )
+      }
+      room.removePlayer(socket)
+    })
+
     socket.on('disconnect', () => {
       totalConnected--
+      if (socket.data.room) {
+        // some cleanup
+        socket.data.room.removePlayer(socket)
+      }
       console.log(`Connection ${socket.id} has left the building`)
     })
   })

@@ -5,7 +5,7 @@ import NavBackIcon from '@material-ui/icons/NavigateBefore'
 import React, {useEffect} from 'react'
 import {connect} from 'react-redux'
 import history from '../history'
-import {requestRoomJoin} from '../store'
+import {requestRoomJoin, requestRoomLeave} from '../store'
 
 /**
  * COMPONENT
@@ -42,6 +42,7 @@ export const Room = props => {
             <Fab
               size="small"
               onClick={() => {
+                requestRoomLeave(props.id)
                 history.push('/')
               }}
               color="primary"

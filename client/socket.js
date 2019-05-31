@@ -32,6 +32,10 @@ socket.on('connect', () => {
     store.dispatch(createSingleLobby(room))
   })
 
+  socket.on('room_player_update', room => {
+    store.dispatch(roomUpdate(room))
+  })
+
   socket.on('err', msg => {
     console.error(msg)
   })
