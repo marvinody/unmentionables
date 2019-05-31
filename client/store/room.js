@@ -41,7 +41,6 @@ export const requestRoomLeave = id => {
 export default function(state = initialState, action) {
   switch (action.type) {
     case LOAD_ROOM:
-      console.log(action)
       return {
         ...state,
         ...action.room

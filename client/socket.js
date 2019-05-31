@@ -25,7 +25,6 @@ socket.on('connect', () => {
   })
   socket.on('res_room_join', room => {
     store.dispatch(roomUpdate(room))
-    console.log('store:', store.getState())
   })
 
   /*

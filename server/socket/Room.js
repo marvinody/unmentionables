@@ -38,7 +38,6 @@ module.exports = function(io) {
     // if empty, need to be deleted manually and everyone informed
     // this only informs if >0 players in room
     removePlayer(socket) {
-      console.log('removing player')
       const isPlayer = this.players[socket.id] !== undefined
       const isSpectator = this.spectators[socket.id] !== undefined
       if (isPlayer) {
@@ -54,7 +53,6 @@ module.exports = function(io) {
       // tell everyone else that room has changed
       socket.to(this.uniqueName).emit('room_player_update', this.expandedInfo())
       io.to('lobby').emit('lobby_room_update', this.basicInfo())
-      console.log('this:', this)
       return Object.keys(this.players).length === 0
     }
 
@@ -139,7 +137,7 @@ module.exports = function(io) {
         )
       }
       const isEmpty = room.removePlayer(socket)
-      console.log('isEmpty:', isEmpty)
+
       if (isEmpty) {
         this.removeRoom(room.id)
       }
