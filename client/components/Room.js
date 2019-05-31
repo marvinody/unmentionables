@@ -125,7 +125,7 @@ export const Room = props => {
                   value={text}
                   onChange={e => setText(e.target.value)}
                 />
-                <IconButton type="submit">
+                <IconButton type="submit" disabled={text.length === 0}>
                   <AddIcon fontSize="small" />
                 </IconButton>
               </form>

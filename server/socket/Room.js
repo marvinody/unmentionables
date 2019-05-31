@@ -16,6 +16,9 @@ module.exports = function(io) {
     }
 
     addMessage(message, from = null) {
+      if (message.length === 0) {
+        return
+      }
       const msg = {
         message,
         from,
