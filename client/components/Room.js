@@ -21,6 +21,9 @@ const useStyles = makeStyles(theme => ({
   },
   fab: {
     margin: theme.spacing(1)
+  },
+  listitem: {
+    paddingRight: theme.spacing(2)
   }
 }))
 export const Room = props => {
@@ -62,15 +65,23 @@ export const Room = props => {
                 </Grid>
               </Grid>
             </Grid>
-            <Grid container xs={12}>
-              <List>
-                {props.players.map((player, idx) => (
-                  <ListItem key={player.id}>
-                    <ListItemText primary={idx + 1} />
-                    <ListItemText primary={player.name} />
-                  </ListItem>
-                ))}
-              </List>
+            <Grid container item>
+              <Grid xs={12} item>
+                Players:
+              </Grid>
+              <Grid container item xs={12}>
+                <List>
+                  {props.players.map((player, idx) => (
+                    <ListItem key={player.id} justify="space-between">
+                      <ListItemText
+                        className={classes.listitem}
+                        primary={idx + 1}
+                      />
+                      <ListItemText primary={player.name} />
+                    </ListItem>
+                  ))}
+                </List>
+              </Grid>
             </Grid>
           </Grid>
           <Grid item sm={12} md={5} container>
