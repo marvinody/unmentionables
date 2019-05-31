@@ -12,6 +12,21 @@ module.exports = function(io) {
       this.id = genId()
       this.size = Math.max(MIN_PLAYERS, Math.min(MAX_PLAYERS, size))
       this.uniqueName = `room-#${this.id}`
+      this.messages = []
+    }
+
+    addMessage(message, from = null) {
+      const msg = {
+        message,
+        from,
+        id: genId()
+      }
+      this.messages.push(msg)
+      io.to(this.uniqueName).emit('room_message_single', msg)
+    }
+
+    sendAllMessagesTo(socket) {
+      socket.emit('room_message_all', this.messages)
     }
 
     // TODO - check if game in progress, if yes add to spectator
@@ -25,18 +40,26 @@ module.exports = function(io) {
       } else {
         this.players[socket.id] = socket
       }
+      // some socket stuff for the original person
       socket.leave('lobby')
       socket.join(this.uniqueName)
       socket.data.room = this
       socket.data.timeJoinedRoom = Date.now()
       socket.emit('res_room_join', this.expandedInfo())
+      // now everyone else in the room can know
       socket.to(this.uniqueName).emit('room_player_update', this.expandedInfo())
+      // and the lobby
       io.to('lobby').emit('lobby_room_update', this.basicInfo())
+      // and we'll add a message and share that. but socket needs them all
+      this.sendAllMessagesTo(socket)
+      this.addMessage(`${socket.data.name} has joined!`)
     }
+
     // returns true if no more players in room
     // false otherwise
     // if empty, need to be deleted manually and everyone informed
     // this only informs if >0 players in room
+    // TODO choose new host also
     removePlayer(socket) {
       const isPlayer = this.players[socket.id] !== undefined
       const isSpectator = this.spectators[socket.id] !== undefined

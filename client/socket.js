@@ -2,6 +2,8 @@ import io from 'socket.io-client'
 import history from './history'
 import store, {
   createSingleLobby,
+  loadMessage,
+  loadMessages,
   removeSingleLobby,
   roomUpdate,
   updateSingleLobby
@@ -46,6 +48,14 @@ socket.on('connect', () => {
 
   socket.on('room_player_update', room => {
     store.dispatch(roomUpdate(room))
+  })
+
+  socket.on('room_message_single', msg => {
+    store.dispatch(loadMessage(msg))
+  })
+
+  socket.on('room_message_all', messages => {
+    store.dispatch(loadMessages(messages))
   })
 
   socket.on('err', msg => {

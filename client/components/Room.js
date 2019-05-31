@@ -1,4 +1,12 @@
-import {Fab, Grid, List, ListItemText, Paper} from '@material-ui/core'
+import {
+  Box,
+  Fab,
+  Grid,
+  Input,
+  List,
+  ListItemText,
+  Paper
+} from '@material-ui/core'
 import ListItem from '@material-ui/core/ListItem'
 import {makeStyles} from '@material-ui/core/styles'
 import NavBackIcon from '@material-ui/icons/NavigateBefore'
@@ -24,6 +32,9 @@ const useStyles = makeStyles(theme => ({
   },
   listitem: {
     paddingRight: theme.spacing(2)
+  },
+  ul: {
+    listStyle: 'none'
   }
 }))
 export const Room = props => {
@@ -52,7 +63,7 @@ export const Room = props => {
               <NavBackIcon />
             </Fab>
           </Grid>
-          <Grid item xs={11} md={5} container direction="column">
+          <Grid item xs={11} md={5} container direction="row">
             <Grid item container xs={12} direction="row">
               <Grid item xs={6}>
                 {props.name}
@@ -66,7 +77,7 @@ export const Room = props => {
                 </Grid>
               </Grid>
             </Grid>
-            <Grid container item>
+            <Grid container item xs={12}>
               <Grid xs={12} item>
                 Players:
               </Grid>
@@ -85,8 +96,20 @@ export const Room = props => {
               </Grid>
             </Grid>
           </Grid>
-          <Grid item sm={12} md={5} container>
-            <div>CHATROOM</div>
+          <Grid item xs={12} md={5} container>
+            <span>Chat</span>
+            <Box>
+              <ul className={classes.ul}>
+                {props.messages.map(msg => {
+                  return (
+                    <li key={msg.id}>
+                      {msg.from}: {msg.message}
+                    </li>
+                  )
+                })}
+              </ul>
+              <Input multiline />
+            </Box>
           </Grid>
         </Grid>
       </Paper>

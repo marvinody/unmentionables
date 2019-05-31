@@ -4,6 +4,8 @@ import socket from '../socket'
  * ACTION TYPES
  */
 const LOAD_ROOM = 'LOAD_ROOM'
+const LOAD_MESSAGES = 'LOAD_MESSAGES'
+const LOAD_MESSAGE = 'LOAD_MESSAGE'
 
 /**
  * INITIAL STATE
@@ -14,7 +16,8 @@ const initialState = {
   name: '',
   size: 0,
   players: [],
-  spectators: []
+  spectators: [],
+  messages: []
 }
 
 /**
@@ -23,6 +26,14 @@ const initialState = {
 export const roomUpdate = room => ({
   room,
   type: LOAD_ROOM
+})
+export const loadMessages = messages => ({
+  messages,
+  type: LOAD_MESSAGES
+})
+export const loadMessage = message => ({
+  message,
+  type: LOAD_MESSAGE
 })
 
 /**
@@ -44,6 +55,16 @@ export default function(state = initialState, action) {
       return {
         ...state,
         ...action.room
+      }
+    case LOAD_MESSAGE:
+      return {
+        ...state,
+        messages: [...state.messages, action.message]
+      }
+    case LOAD_MESSAGES:
+      return {
+        ...state,
+        messages: action.messages
       }
     default:
       return state
