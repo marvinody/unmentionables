@@ -1,5 +1,6 @@
 import io from 'socket.io-client'
-import store, {createSingleLobby} from './store'
+import history from './history'
+import store, {createSingleLobby, roomUpdate} from './store'
 import {loadLobbyInfo, loadUserInfo} from './store/'
 const socket = io(window.location.origin)
 
@@ -14,6 +15,13 @@ socket.on('connect', () => {
   socket.on('res_user_info', info => {
     store.dispatch(loadUserInfo(info))
   })
+  socket.on('res_lobby_create', room => {
+    history.push(`/rooms/${room.id}`)
+  })
+  socket.on('res_room_join', room => {
+    store.dispatch(roomUpdate(room))
+    console.log('store:', store.getState())
+  })
 
   /*
   * Server Responders
@@ -23,8 +31,9 @@ socket.on('connect', () => {
   socket.on('lobby_room_create', room => {
     store.dispatch(createSingleLobby(room))
   })
-  socket.on('room_update', room => {
-    console.log('room update:', room)
+
+  socket.on('err', msg => {
+    console.error(msg)
   })
 })
 

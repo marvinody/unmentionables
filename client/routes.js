@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {Route, Switch, withRouter} from 'react-router-dom'
 import Lobby from './components/Lobby'
+import Room from './components/Room'
 
 /**
  * COMPONENT
@@ -10,7 +11,8 @@ class Routes extends Component {
   render() {
     return (
       <Switch>
-        <Route path="/" component={Lobby} />
+        <Route path="/" exact component={Lobby} />
+        <Route path="/rooms/:id" component={Room} />
       </Switch>
     )
   }

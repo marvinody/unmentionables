@@ -1,4 +1,4 @@
-const id = require('../id')
+const genId = require('../id')
 const MIN_PLAYERS = 2
 const MAX_PLAYERS = 4
 
@@ -9,21 +9,20 @@ module.exports = function(io) {
       this.spectators = {}
       this.host = {}
       this.name = name
-      this.id = id()
+      this.id = genId()
       this.size = Math.max(MIN_PLAYERS, Math.min(MAX_PLAYERS, size))
       this.uniqueName = `room-#${this.id}`
     }
 
-    addHost(socket) {
-      this.host = socket
-      this.addPlayer(socket)
-    }
-
     addPlayer(socket) {
+      if (Object.keys(this.players).length === 0) {
+        this.host = socket
+      }
       this.players[socket.id] = socket
       socket.join(this.uniqueName)
       socket.data.room = this
-      io.to(this.uniqueName).emit('room_update', this.expandedInfo())
+      socket.emit('res_room_join', this.expandedInfo())
+      // socket.to(room.uniqueName).emit('')
     }
 
     expandedInfo() {
@@ -50,7 +49,6 @@ module.exports = function(io) {
       return {
         id: this.id,
         name: this.name,
-        host: this.host.data.name,
         size: this.size,
         playerCount: Object.keys(this.players).length,
         spectatorCount: Object.keys(this.spectators).length
@@ -69,6 +67,9 @@ module.exports = function(io) {
       const room = new Room(info.name, info.size)
       this.rooms[room.id] = room
       return room
+    }
+    findById(id) {
+      return this.rooms[id]
     }
   }
   return {
