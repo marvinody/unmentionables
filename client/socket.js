@@ -21,8 +21,10 @@ socket.on('connect', () => {
   * pushing it out to the clients
   * */
   socket.on('lobby_room_create', room => {
-    console.log('room:', room)
     store.dispatch(createSingleLobby(room))
+  })
+  socket.on('room_update', room => {
+    console.log('room update:', room)
   })
 })
 
