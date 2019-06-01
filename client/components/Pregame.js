@@ -1,25 +1,11 @@
-import {
-  Box,
-  Button,
-  Fab,
-  Grid,
-  IconButton,
-  Input,
-  List,
-  ListItemText,
-  Paper
-} from '@material-ui/core'
+import {Button, Fab, Grid, List, ListItemText, Paper} from '@material-ui/core'
 import ListItem from '@material-ui/core/ListItem'
 import {makeStyles} from '@material-ui/core/styles'
-import AddIcon from '@material-ui/icons/Add'
 import NavBackIcon from '@material-ui/icons/NavigateBefore'
 import React, {useState} from 'react'
 import history from '../history'
-import {
-  requestRoomGameStart,
-  requestRoomLeave,
-  requestRoomMessageCreate
-} from '../store'
+import {requestRoomGameStart, requestRoomLeave} from '../store'
+import {Sidechat} from './Sidechat'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -41,12 +27,6 @@ const useStyles = makeStyles(theme => ({
     listStyle: 'none'
   }
 }))
-
-const handleSubmit = (event, text, setText) => {
-  event.preventDefault()
-  requestRoomMessageCreate(text)
-  setText('')
-}
 
 export const Pregame = props => {
   const [text, setText] = useState('')
@@ -115,34 +95,7 @@ export const Pregame = props => {
           </Grid>
         </Grid>
       </Paper>
-      <Paper className={classes.paper}>
-        <Grid container spacing={2}>
-          <Grid item xs={12} container>
-            <span>Chat</span>
-            <Box>
-              <ul className={classes.ul}>
-                {props.messages.map(msg => {
-                  return (
-                    <li key={msg.id}>
-                      {msg.from}: {msg.message}
-                    </li>
-                  )
-                })}
-              </ul>
-              <form onSubmit={e => handleSubmit(e, text, setText)}>
-                <Input
-                  name="text"
-                  value={text}
-                  onChange={e => setText(e.target.value)}
-                />
-                <IconButton type="submit" disabled={text.length === 0}>
-                  <AddIcon fontSize="small" />
-                </IconButton>
-              </form>
-            </Box>
-          </Grid>
-        </Grid>
-      </Paper>
+      <Sidechat {...props} />
     </div>
   )
 }
