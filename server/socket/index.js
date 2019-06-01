@@ -24,10 +24,9 @@ module.exports = io => {
     // I checked already, this is unused
     socket.data.name = genName()
     socket.data.id = genId()
-    socket.on('req_user_info', () => {
-      socket.emit('res_user_info', {
-        name: socket.data.name
-      })
+    socket.emit('res_user_info', {
+      id: socket.data.id,
+      name: socket.data.name
     })
 
     socket.on('req_lobby_create', info => {
@@ -67,7 +66,7 @@ module.exports = io => {
       if (!socket.data.room) {
         return
       }
-      socket.data.room.setState('ROOM_INGAME')
+      socket.data.room.startGame()
     })
 
     socket.on('disconnect', () => {
