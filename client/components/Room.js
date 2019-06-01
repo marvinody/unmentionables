@@ -17,10 +17,10 @@ import React, {useEffect, useState} from 'react'
 import {connect} from 'react-redux'
 import history from '../history'
 import {
+  requestRoomGameStart,
   requestRoomJoin,
   requestRoomLeave,
-  requestRoomMessageCreate,
-  requestRoomGameStart
+  requestRoomMessageCreate
 } from '../store'
 
 const ROOM_PREGAME = 'ROOM_PREGAME'

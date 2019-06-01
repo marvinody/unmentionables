@@ -55,6 +55,14 @@ module.exports = io => {
       }
       socket.data.room.addMessage(text, socket.data.name)
     })
+
+    socket.on('req_room_story_message_create', text => {
+      if (!socket.data.room) {
+        return
+      }
+      socket.data.room.addStoryMessage(text, socket)
+    })
+
     socket.on('req_room_game_start', () => {
       if (!socket.data.room) {
         return

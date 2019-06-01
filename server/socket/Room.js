@@ -1,6 +1,8 @@
 const genId = require('../id')
+const genPrompt = require('./prompt')
 const MIN_PLAYERS = 2
 const MAX_PLAYERS = 4
+const MAX_CHARS_FOR_MSG = 160 // screw twitter
 
 module.exports = function(io) {
   class Room {
@@ -14,15 +16,20 @@ module.exports = function(io) {
       this.uniqueName = `room-#${this.id}`
       this.messages = []
       this.state = 'ROOM_PREGAME'
+
+      this.prompt = ''
+      this.storyMessages = []
+      this.curPlayer = 0 // idx for who's turn it is
     }
 
-    setState(state) {
-      this.state = state
+    startGame() {
+      this.state = 'ROOM_INGAME'
+      this.prompt = genPrompt()
       io.to(this.uniqueName).emit('room_state_update', this.expandedInfo())
     }
 
     addMessage(message, from = null) {
-      if (message.length === 0) {
+      if (message.length === 0 || message.length > MAX_CHARS_FOR_MSG) {
         return
       }
       const msg = {
@@ -32,6 +39,26 @@ module.exports = function(io) {
       }
       this.messages.push(msg)
       io.to(this.uniqueName).emit('room_message_single', msg)
+    }
+    addStoryMessage(message, socket) {
+      if (message.length === 0 || message.length > MAX_CHARS_FOR_MSG) {
+        return
+      }
+      const playerKeys = Object.keys(this.players)
+      const socketIdx = playerKeys.findIndex(id => socket.id === id)
+      if (socketIdx !== this.curPlayer) {
+        console.log(`Expected: ${this.curPlayer} idx, but got ${socketIdx}`)
+        return
+      }
+      // mutate
+      this.storyMessages.push({
+        message,
+        from: socket.data.name,
+        id: genId()
+      })
+      // so this should work generally. need to handle leave cases in remove tho
+      this.curPlayer = (this.curPlayer + 1) % this.playerKeys.length
+      io.to(this.uniqueName).emit('room_state_update', this.expandedInfo())
     }
 
     sendAllMessagesTo(socket) {
@@ -114,6 +141,9 @@ module.exports = function(io) {
           id: this.host.data.id
         },
         size: this.size,
+        storyMessages: this.storyMessages,
+        prompt: this.prompt,
+        curPlayer: this.curPlayer,
         players: Object.keys(this.players).map(k => ({
           name: this.players[k].data.name,
           id: this.players[k].data.id
