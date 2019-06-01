@@ -50,6 +50,10 @@ socket.on('connect', () => {
     store.dispatch(roomUpdate(room))
   })
 
+  socket.on('room_state_update', room => {
+    store.dispatch(roomUpdate(room))
+  })
+
   socket.on('room_message_single', msg => {
     store.dispatch(loadMessage(msg))
   })

@@ -45,6 +45,12 @@ export const requestRoomJoin = id => {
 export const requestRoomLeave = id => {
   socket.emit('req_room_leave', id)
 }
+export const requestRoomMessageCreate = text => {
+  socket.emit('req_room_message_create', text)
+}
+export const requestRoomGameStart = () => {
+  socket.emit('req_room_game_start')
+}
 
 /**
  * REDUCER

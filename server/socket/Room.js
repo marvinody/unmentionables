@@ -13,6 +13,12 @@ module.exports = function(io) {
       this.size = Math.max(MIN_PLAYERS, Math.min(MAX_PLAYERS, size))
       this.uniqueName = `room-#${this.id}`
       this.messages = []
+      this.state = 'ROOM_PREGAME'
+    }
+
+    setState(state) {
+      this.state = state
+      io.to(this.uniqueName).emit('room_state_update', this.expandedInfo())
     }
 
     addMessage(message, from = null) {
@@ -102,6 +108,7 @@ module.exports = function(io) {
       return {
         id: this.id,
         name: this.name,
+        state: this.state,
         host: {
           name: this.host.data.name,
           id: this.host.data.id
@@ -122,6 +129,7 @@ module.exports = function(io) {
       return {
         id: this.id,
         name: this.name,
+        state: this.state,
         size: this.size,
         playerCount: Object.keys(this.players).length,
         spectatorCount: Object.keys(this.spectators).length
