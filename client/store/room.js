@@ -21,7 +21,8 @@ const initialState = {
   storyMessages: [],
   prompt: '',
   state: '',
-  curPlayer: -1
+  curPlayer: -1,
+  dieClass: ''
 }
 
 /**

@@ -7,6 +7,7 @@ import history from '../history'
 import {requestRoomLeave} from '../store'
 import {Sidechat} from './Sidechat'
 import {StoryChat} from './Storychat'
+import './stylesheets/die.css'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -24,6 +25,16 @@ const useStyles = makeStyles(theme => ({
   },
   ul: {
     listStyle: 'none'
+  },
+  dieCont: {
+    width: 128,
+    height: 128,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  die: {
+    backgroundImage: 'url("/story_cubes.jpg")'
   }
 }))
 export const Ingame = props => {
@@ -56,20 +67,27 @@ export const Ingame = props => {
         </Grid>
         <Grid item container xs={12}>
           {/* Player list & dice roll */}
-          <Grid item container xs={3}>
-            <Paper className={classes.paper}>
-              <List>
-                {props.players.map((player, idx) => (
-                  <ListItem key={player.id} justify="space-between">
-                    <ListItemText
-                      className={classes.listitem}
-                      primary={idx + 1}
-                    />
-                    <ListItemText primary={player.name} />
-                  </ListItem>
-                ))}
-              </List>
-            </Paper>
+          <Grid item container xs={3} direction="column">
+            <Grid item container justify="center">
+              <Paper className={classes.dieCont}>
+                <div className={classes.die + ' ' + props.dieClass} />
+              </Paper>
+            </Grid>
+            <Grid item container>
+              <Paper className={classes.paper}>
+                <List>
+                  {props.players.map((player, idx) => (
+                    <ListItem key={player.id} justify="space-between">
+                      <ListItemText
+                        className={classes.listitem}
+                        primary={idx + 1}
+                      />
+                      <ListItemText primary={player.name} />
+                    </ListItem>
+                  ))}
+                </List>
+              </Paper>
+            </Grid>
           </Grid>
           {/* story  */}
           <Grid item container xs={5}>

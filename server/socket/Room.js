@@ -1,5 +1,6 @@
 const genId = require('../id')
 const genPrompt = require('./prompt')
+const die = require('./die')
 const MIN_PLAYERS = 2
 const MAX_PLAYERS = 4
 const MAX_CHARS_FOR_MSG = 160 // screw twitter
@@ -20,11 +21,14 @@ module.exports = function(io) {
       this.prompt = ''
       this.storyMessages = []
       this.curPlayer = 0 // idx for who's turn it is
+      this.dieClass = ''
     }
 
     startGame() {
       this.state = 'ROOM_INGAME'
       this.prompt = genPrompt()
+      this.curPlayer = 0
+      this.dieClass = die.roll()
       io.to(this.uniqueName).emit('room_state_update', this.expandedInfo())
     }
 
@@ -58,6 +62,7 @@ module.exports = function(io) {
       })
       // so this should work generally. need to handle leave cases in remove tho
       this.curPlayer = (this.curPlayer + 1) % playerKeys.length
+      this.dieClass = die.roll()
       io.to(this.uniqueName).emit('room_state_update', this.expandedInfo())
     }
 
@@ -143,6 +148,7 @@ module.exports = function(io) {
         size: this.size,
         storyMessages: this.storyMessages,
         prompt: this.prompt,
+        dieClass: this.dieClass,
         curPlayer: this.curPlayer,
         players: Object.keys(this.players).map(k => ({
           name: this.players[k].data.name,
