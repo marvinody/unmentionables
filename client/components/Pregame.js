@@ -2,7 +2,7 @@ import {Button, Fab, Grid, List, ListItemText, Paper} from '@material-ui/core'
 import ListItem from '@material-ui/core/ListItem'
 import {makeStyles} from '@material-ui/core/styles'
 import NavBackIcon from '@material-ui/icons/NavigateBefore'
-import React, {useState} from 'react'
+import React from 'react'
 import history from '../history'
 import {requestRoomGameStart, requestRoomLeave} from '../store'
 import {Sidechat} from './Sidechat'
@@ -29,7 +29,6 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export const Pregame = props => {
-  const [text, setText] = useState('')
   const classes = useStyles()
 
   return (
