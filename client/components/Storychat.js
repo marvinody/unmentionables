@@ -17,17 +17,6 @@ const DisconnectedStorychat = props => {
       handleSubmit={handleSubmit}
       canSendMessage={text => {
         const curPlayer = props.players[props.curPlayerIdx]
-        console.log(
-          props.userId,
-          '=== ',
-          curPlayer.id,
-          ':= ',
-          props.userId === curPlayer.id
-        )
-        console.log(text.length > 0)
-
-        console.log(props.userId === curPlayer.id && text.length > 0)
-
         return props.userId === curPlayer.id && text.length > 0
       }}
     />
