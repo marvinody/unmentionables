@@ -16,9 +16,19 @@ const DisconnectedStorychat = props => {
       title="Story Chat"
       handleSubmit={handleSubmit}
       canSendMessage={text => {
-        return (
-          props.userId === props.players[props.curPlayerIdx] && text.length > 0
+        const curPlayer = props.players[props.curPlayerIdx]
+        console.log(
+          props.userId,
+          '=== ',
+          curPlayer.id,
+          ':= ',
+          props.userId === curPlayer.id
         )
+        console.log(text.length > 0)
+
+        console.log(props.userId === curPlayer.id && text.length > 0)
+
+        return props.userId === curPlayer.id && text.length > 0
       }}
     />
   )
@@ -27,5 +37,6 @@ const DisconnectedStorychat = props => {
 export const StoryChat = connect(state => ({
   userId: state.user.id,
   curPlayerIdx: state.socket.room.curPlayer,
-  players: state.socket.room.players
+  players: state.socket.room.players,
+  messages: state.socket.room.storyMessages
 }))(DisconnectedStorychat)
