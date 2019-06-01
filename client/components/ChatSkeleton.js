@@ -31,6 +31,7 @@ const useStyles = makeStyles(theme => ({
 export const ChatSkeleton = props => {
   const classes = useStyles()
   const [text, setText] = useState('')
+  const canSendMessage = props.canSendMessage || (text => text.length > 0)
   return (
     <Paper className={classes.paper}>
       <Grid container spacing={1} direction="column">
@@ -53,7 +54,7 @@ export const ChatSkeleton = props => {
               value={text}
               onChange={e => setText(e.target.value)}
             />
-            <IconButton type="submit" disabled={text.length === 0}>
+            <IconButton type="submit" disabled={!canSendMessage(text)}>
               <AddIcon fontSize="small" />
             </IconButton>
           </form>

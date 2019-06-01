@@ -94,7 +94,7 @@ export const Pregame = props => {
           </Grid>
         </Grid>
       </Paper>
-      <Sidechat {...props} />
+      <Sidechat messages={props.messages} />
     </div>
   )
 }

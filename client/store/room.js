@@ -17,7 +17,11 @@ const initialState = {
   size: 0,
   players: [],
   spectators: [],
-  messages: []
+  messages: [],
+  storyMessages: [],
+  prompt: '',
+  state: '',
+  curPlayer: -1
 }
 
 /**
