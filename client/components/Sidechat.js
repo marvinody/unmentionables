@@ -14,6 +14,7 @@ export const Sidechat = props => {
       messages={props.messages}
       title="Room Chat"
       handleSubmit={handleSubmit}
+      classes={props.classes}
     />
   )
 }

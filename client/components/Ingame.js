@@ -1,7 +1,10 @@
-import {Grid, List, ListItemText, Paper} from '@material-ui/core'
+import {Fab, Grid, List, ListItemText, Paper} from '@material-ui/core'
 import ListItem from '@material-ui/core/ListItem'
 import {makeStyles} from '@material-ui/core/styles'
+import NavBackIcon from '@material-ui/icons/NavigateBefore'
 import React from 'react'
+import history from '../history'
+import {requestRoomLeave} from '../store'
 import {Sidechat} from './Sidechat'
 import {StoryChat} from './Storychat'
 
@@ -11,8 +14,6 @@ const useStyles = makeStyles(theme => ({
   },
   paper: {
     padding: theme.spacing(2),
-    margin: 'auto',
-    marginTop: theme.spacing(2),
     maxWidth: 800
   },
   fab: {
@@ -31,12 +32,27 @@ export const Ingame = props => {
   return (
     <Paper className={classes.paper}>
       <Grid container spacing={2}>
-        <Grid item xs={12}>
-          {' '}
-          {/*prompt space */}
-          <Paper className={classes.paper}>
-            <p>{props.prompt}</p>
-          </Paper>
+        <Grid item container xs={12}>
+          <Grid item container xs={1} alignItems="center">
+            <Fab
+              size="small"
+              onClick={() => {
+                requestRoomLeave(props.id)
+                history.push('/')
+              }}
+              color="primary"
+              aria-label="Go Back"
+              className={classes.fab}
+            >
+              <NavBackIcon />
+            </Fab>
+          </Grid>
+          <Grid item container xs={11}>
+            {/*prompt space */}
+            <Paper className={classes.paper}>
+              <p>{props.prompt}</p>
+            </Paper>
+          </Grid>
         </Grid>
         <Grid item container xs={12}>
           {/* Player list & dice roll */}

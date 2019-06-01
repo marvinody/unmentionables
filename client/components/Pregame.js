@@ -25,6 +25,10 @@ const useStyles = makeStyles(theme => ({
   },
   ul: {
     listStyle: 'none'
+  },
+  sidechat: {
+    margin: 'auto',
+    marginTop: theme.spacing(2)
   }
 }))
 
@@ -94,7 +98,20 @@ export const Pregame = props => {
           </Grid>
         </Grid>
       </Paper>
-      <Sidechat messages={props.messages} />
+      {/* TODO make this not hardcoded with 16
+        maybe make it a fn that takes in theme and returns obj?
+      */}
+      <Sidechat
+        messages={props.messages}
+        classes={{
+          chat: {
+            margin: 'auto',
+            marginTop: '16px',
+            padding: '16px',
+            maxWidth: 800
+          }
+        }}
+      />
     </div>
   )
 }

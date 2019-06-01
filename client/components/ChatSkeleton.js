@@ -3,37 +3,37 @@ import {makeStyles} from '@material-ui/core/styles'
 import AddIcon from '@material-ui/icons/Add'
 import React, {useState} from 'react'
 
-const useStyles = makeStyles(theme => ({
-  paper: {
-    padding: theme.spacing(2),
-    margin: 'auto',
-    marginTop: theme.spacing(2),
-    maxWidth: 800
-  },
-  listitem: {
-    paddingRight: theme.spacing(2)
-  },
-  outerMessages: {
-    display: 'flex',
-    flexDirection: 'column-reverse',
-    height: 480
-  },
-  messages: {
-    overflow: 'auto',
-    width: '100%',
-    height: 480
-  },
-  span: {
-    margin: 'auto'
-  }
-}))
+const useStyles = customClasses =>
+  makeStyles(theme => ({
+    chat: {
+      padding: theme.spacing(2),
+      maxWidth: 800
+    },
+    listitem: {
+      paddingRight: theme.spacing(2)
+    },
+    outerMessages: {
+      display: 'flex',
+      flexDirection: 'column-reverse',
+      height: 480
+    },
+    messages: {
+      overflow: 'auto',
+      width: '100%',
+      height: 480
+    },
+    span: {
+      margin: 'auto'
+    },
+    ...customClasses
+  }))
 
 export const ChatSkeleton = props => {
-  const classes = useStyles()
+  const classes = useStyles(props.classes || {})()
   const [text, setText] = useState('')
   const canSendMessage = props.canSendMessage || (text => text.length > 0)
   return (
-    <Paper className={classes.paper}>
+    <Paper className={classes.chat}>
       <Grid container spacing={1} direction="column">
         <Grid item xs={12} className={classes.span}>
           <span>{props.title}</span>
