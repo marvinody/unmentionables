@@ -1,11 +1,11 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import {requestRoomStoryMessageCreate} from '../store'
 import {ChatSkeleton} from './ChatSkeleton'
 
 const handleSubmit = (event, text, setText) => {
   event.preventDefault()
-  // requestRoomMessageCreate(text)
-
+  requestRoomStoryMessageCreate(text)
   setText('')
 }
 

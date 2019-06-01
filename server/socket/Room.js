@@ -57,7 +57,7 @@ module.exports = function(io) {
         id: genId()
       })
       // so this should work generally. need to handle leave cases in remove tho
-      this.curPlayer = (this.curPlayer + 1) % this.playerKeys.length
+      this.curPlayer = (this.curPlayer + 1) % playerKeys.length
       io.to(this.uniqueName).emit('room_state_update', this.expandedInfo())
     }
 

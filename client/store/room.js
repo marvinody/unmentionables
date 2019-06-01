@@ -55,6 +55,9 @@ export const requestRoomMessageCreate = text => {
 export const requestRoomGameStart = () => {
   socket.emit('req_room_game_start')
 }
+export const requestRoomStoryMessageCreate = text => {
+  socket.emit('req_room_story_message_create', text)
+}
 
 /**
  * REDUCER
