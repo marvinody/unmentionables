@@ -58,7 +58,9 @@ module.exports = function(io) {
       this.storyMessages.push({
         message,
         from: socket.data.name,
-        id: genId()
+        id: genId(),
+        time: Date.now(),
+        dieClass: this.dieClass
       })
       // so this should work generally. need to handle leave cases in remove tho
       this.curPlayer = (this.curPlayer + 1) % playerKeys.length
@@ -107,6 +109,16 @@ module.exports = function(io) {
       if (isPlayer) {
         delete this.players[socket.id]
         this.upgradeSpectator()
+        // if ingame, then let's see how to modify the player idx
+        if (this.state === 'ROOM_INGAME') {
+          // if the usercount is the same, we don't care
+          // but if we got less AND the count is on the last player
+          // shift it to 0. because that makes sense.
+          const numPlayers = Object.keys(this.players).length
+          if (numPlayers === this.curPlayer) {
+            this.curPlayer = 0
+          }
+        }
       } else if (isSpectator) {
         delete this.spectators[socket.id]
       }

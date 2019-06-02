@@ -32,7 +32,7 @@ wrapper.prototype.init = async function() {
 
   for await (const line of rl) {
     // Each line in input.txt will be successively available here as `line`.
-    const search = /\.(\w+)/.exec(line)
+    const search = /\.(.*) \{$/.exec(line)
     if (search && search.length > 1) {
       this.classes.push(search[1])
     }
