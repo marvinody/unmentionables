@@ -3,6 +3,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {requestRoomStoryMessageCreate} from '../store'
 import {ChatSkeleton} from './ChatSkeleton'
+import './stylesheets/storychat.css'
 
 const handleSubmit = (event, text, setText) => {
   event.preventDefault()
@@ -26,28 +27,9 @@ const DisconnectedStorychat = props => {
       }}
       msgGen={msg => {
         return (
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'flex-start',
-              alignItems: 'center',
-              borderBottom: '1px solid black'
-            }}
-          >
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center'
-              }}
-            >
-              <div
-                className={msg.dieClass}
-                style={{
-                  backgroundImage: 'url("/story_cubes.jpg")',
-                  transform: 'scale(0.5)'
-                }}
-              />
+          <div className="msg-container">
+            <div className="roll-container">
+              <div className={'roll ' + msg.dieClass} />
             </div>
             {msg.message}
           </div>

@@ -1,0 +1,17 @@
+.msg-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  border-bottom: 1px solid black;
+}
+
+.roll-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.roll {
+  background-image: url('/story_cubes.jpg');
+  transform: scale(0.5);
+}
