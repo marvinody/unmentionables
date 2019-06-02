@@ -11,7 +11,10 @@ import './stylesheets/die.css'
 
 const useStyles = makeStyles(theme => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
+    padding: theme.spacing(2),
+    maxWidth: 1200,
+    margin: 'auto'
   },
   paper: {
     padding: theme.spacing(2),
@@ -41,7 +44,7 @@ export const Ingame = props => {
   const classes = useStyles()
 
   return (
-    <Paper className={classes.paper}>
+    <Paper className={classes.root}>
       <Grid container spacing={2}>
         <Grid item container xs={12}>
           <Grid item container xs={1} alignItems="center">

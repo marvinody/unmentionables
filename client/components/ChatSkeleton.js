@@ -1,6 +1,7 @@
 import {Grid, IconButton, Input, Paper} from '@material-ui/core'
 import {makeStyles} from '@material-ui/core/styles'
 import AddIcon from '@material-ui/icons/Add'
+import date from 'date-and-time'
 import React, {useState} from 'react'
 
 const useStyles = customClasses =>
@@ -31,6 +32,9 @@ const useStyles = customClasses =>
 export const ChatSkeleton = props => {
   const classes = useStyles(props.classes || {})()
   const [text, setText] = useState('')
+  const titleGen =
+    props.titleGen || (msg => date.format(new Date(msg.time), 'hh:mm A'))
+  const msgGen = props.msgGen || (msg => `${msg.from}: ${msg.message}`)
   const canSendMessage = props.canSendMessage || (text => text.length > 0)
   return (
     <Paper className={classes.chat}>
@@ -42,8 +46,8 @@ export const ChatSkeleton = props => {
           <div className={classes.messages}>
             {props.messages.map(msg => {
               return (
-                <div key={msg.id}>
-                  {msg.from}: {msg.message}
+                <div key={msg.id} title={titleGen(msg)}>
+                  {msgGen(msg)}
                 </div>
               )
             })}

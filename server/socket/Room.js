@@ -39,7 +39,8 @@ module.exports = function(io) {
       const msg = {
         message,
         from,
-        id: genId()
+        id: genId(),
+        time: Date.now()
       }
       this.messages.push(msg)
       io.to(this.uniqueName).emit('room_message_single', msg)
@@ -72,7 +73,6 @@ module.exports = function(io) {
       socket.emit('room_message_all', this.messages)
     }
 
-    // TODO - check if game in progress, if yes add to spectator
     addPlayer(socket) {
       const numPlayers = Object.keys(this.players).length
       if (numPlayers === 0) {
@@ -133,7 +133,6 @@ module.exports = function(io) {
     }
 
     // this should only be called when a player leaves
-    // TODO - check if game is in progress, if yes, do nothing
     upgradeSpectator() {
       const spectKeys = Object.keys(this.spectators)
       if (spectKeys.length === 0) {
