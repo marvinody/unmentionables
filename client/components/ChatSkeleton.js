@@ -34,7 +34,7 @@ export const ChatSkeleton = props => {
   const [text, setText] = useState('')
   const titleGen =
     props.titleGen || (msg => date.format(new Date(msg.time), 'hh:mm A'))
-  const msgGen = props.msgGen || (msg => `${msg.from}: ${msg.message}`)
+  const msgGen = props.msgGen || (msg => `${msg.from || ''}: ${msg.message}`)
   const canSendMessage = props.canSendMessage || (text => text.length > 0)
   return (
     <Paper className={classes.chat}>

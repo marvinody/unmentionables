@@ -23,7 +23,8 @@ const DisconnectedStorychat = props => {
       }}
       titleGen={msg => {
         const time = new Date(msg.time)
-        return `${date.format(time, 'hh:mm A')} - ${msg.from}`
+        const from = msg.from || ''
+        return `${date.format(time, 'hh:mm A')} - ${from}`
       }}
       msgGen={msg => {
         return (
