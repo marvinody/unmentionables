@@ -8,7 +8,7 @@ const useStyles = customClasses =>
   makeStyles(theme => ({
     chat: {
       padding: theme.spacing(2),
-      maxWidth: 800
+      width: '100%'
     },
     listitem: {
       paddingRight: theme.spacing(2)
@@ -25,6 +25,16 @@ const useStyles = customClasses =>
     },
     span: {
       margin: 'auto'
+    },
+    form: {
+      width: '100%',
+      display: 'flex'
+    },
+    input: {
+      flex: '1'
+    },
+    button: {
+      minWidth: 64
     },
     ...customClasses
   }))
@@ -52,13 +62,22 @@ export const ChatSkeleton = props => {
               )
             })}
           </div>
-          <form onSubmit={event => props.handleSubmit(event, text, setText)}>
+          <form
+            onSubmit={event => props.handleSubmit(event, text, setText)}
+            className={classes.form}
+          >
             <Input
               name="message"
               value={text}
               onChange={e => setText(e.target.value)}
+              className={classes.input}
             />
-            <IconButton type="submit" disabled={!canSendMessage(text)}>
+            <IconButton
+              type="submit"
+              disabled={!canSendMessage(text)}
+              color="primary"
+              className={classes.button}
+            >
               <AddIcon fontSize="small" />
             </IconButton>
           </form>

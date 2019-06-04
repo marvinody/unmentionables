@@ -38,6 +38,10 @@ const useStyles = makeStyles(theme => ({
   },
   die: {
     backgroundImage: 'url("/story_cubes.jpg")'
+  },
+  prompt: {
+    width: '100%',
+    textAlign: 'center'
   }
 }))
 export const Ingame = props => {
@@ -45,61 +49,59 @@ export const Ingame = props => {
 
   return (
     <Paper className={classes.root}>
-      <Grid container spacing={2}>
-        <Grid item container xs={12}>
-          <Grid item container xs={1} alignItems="center">
-            <Fab
-              size="small"
-              onClick={() => {
-                requestRoomLeave(props.id)
-                history.push('/')
-              }}
-              color="primary"
-              aria-label="Go Back"
-              className={classes.fab}
-            >
-              <NavBackIcon />
-            </Fab>
+      <Grid item container spacing={2} xs={12}>
+        <Grid item container xs={1} alignItems="center">
+          <Fab
+            size="small"
+            onClick={() => {
+              requestRoomLeave(props.id)
+              history.push('/')
+            }}
+            color="primary"
+            aria-label="Go Back"
+            className={classes.fab}
+          >
+            <NavBackIcon />
+          </Fab>
+        </Grid>
+        <Grid item container xs={11}>
+          {/*prompt space */}
+          <Paper className={classes.prompt}>
+            <p>{props.prompt}</p>
+          </Paper>
+        </Grid>
+      </Grid>
+      <Grid item container xs={12} spacing={2}>
+        {/* Player list & dice roll */}
+        <Grid item container xs={12} md={3} direction="column" spacing={1}>
+          <Grid item container justify="center">
+            <Paper className={classes.dieCont}>
+              <div className={classes.die + ' ' + props.dieClass} />
+            </Paper>
           </Grid>
-          <Grid item container xs={11}>
-            {/*prompt space */}
+          <Grid item container justify="center">
             <Paper className={classes.paper}>
-              <p>{props.prompt}</p>
+              <List>
+                {props.players.map((player, idx) => (
+                  <ListItem key={player.id} justify="space-between">
+                    <ListItemText
+                      className={classes.listitem}
+                      primary={idx + 1}
+                    />
+                    <ListItemText primary={player.name} />
+                  </ListItem>
+                ))}
+              </List>
             </Paper>
           </Grid>
         </Grid>
+        {/* story  */}
+        <Grid item container xs={12} md={9}>
+          <StoryChat />
+        </Grid>
+        {/* Side chat */}
         <Grid item container xs={12}>
-          {/* Player list & dice roll */}
-          <Grid item container xs={3} direction="column">
-            <Grid item container justify="center">
-              <Paper className={classes.dieCont}>
-                <div className={classes.die + ' ' + props.dieClass} />
-              </Paper>
-            </Grid>
-            <Grid item container>
-              <Paper className={classes.paper}>
-                <List>
-                  {props.players.map((player, idx) => (
-                    <ListItem key={player.id} justify="space-between">
-                      <ListItemText
-                        className={classes.listitem}
-                        primary={idx + 1}
-                      />
-                      <ListItemText primary={player.name} />
-                    </ListItem>
-                  ))}
-                </List>
-              </Paper>
-            </Grid>
-          </Grid>
-          {/* story  */}
-          <Grid item container xs={5}>
-            <StoryChat />
-          </Grid>
-          {/* Side chat */}
-          <Grid item container xs={4}>
-            <Sidechat messages={props.messages} />
-          </Grid>
+          <Sidechat messages={props.messages} />
         </Grid>
       </Grid>
     </Paper>
