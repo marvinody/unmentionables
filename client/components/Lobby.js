@@ -1,3 +1,4 @@
+import {Paper} from '@material-ui/core'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
@@ -12,9 +13,13 @@ import {CreateRoom} from './CreateRoom'
  */
 const useStyles = makeStyles(theme => ({
   root: {
-    width: '100%',
-    maxWidth: 360,
     backgroundColor: theme.palette.background.paper
+  },
+  paper: {
+    padding: theme.spacing(3),
+    margin: 'auto',
+    marginTop: theme.spacing(2),
+    maxWidth: 800
   }
 }))
 const ListItemLink = props => {
@@ -34,23 +39,26 @@ export const Lobby = props => {
 
   const {user, lobby} = props
   return (
-    <div>
-      <h3>Welcome, {user.name}</h3>
-      <h4>{lobby.total} players online</h4>
-      <h4>{lobby.rooms.length} rooms</h4>
-      <CreateRoom username={user.name} />
-      <div className={classes.root}>
-        <List component="nav">
-          {lobby.rooms.map(room => (
-            <ListItemLink key={room.id} to={`/rooms/${room.id}`}>
-              <ListItemText
-                primary={room.name}
-                secondary={room.playerCount + '/' + room.size}
-              />
-            </ListItemLink>
-          ))}
-        </List>
-      </div>
+    <div className={classes.root}>
+      <Paper className={classes.paper}>
+        <h3>Welcome, {user.name}</h3>
+        <h4>{lobby.total} players online</h4>
+        <h4>{lobby.rooms.length} rooms</h4>
+        <CreateRoom username={user.name} />
+
+        <div className={classes.root}>
+          <List component="nav">
+            {lobby.rooms.map(room => (
+              <ListItemLink key={room.id} to={`/rooms/${room.id}`}>
+                <ListItemText
+                  primary={room.name}
+                  secondary={room.playerCount + '/' + room.size}
+                />
+              </ListItemLink>
+            ))}
+          </List>
+        </div>
+      </Paper>
     </div>
   )
 }
