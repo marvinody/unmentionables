@@ -30,7 +30,8 @@ export const Room = props => {
 const mapState = state => {
   return {
     ...state.socket.room,
-    id: state.socket.room.id
+    id: state.socket.room.id,
+    user: state.user
   }
 }
 

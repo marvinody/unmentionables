@@ -25,7 +25,12 @@ const useStyles = makeStyles(theme => ({
     minWidth: 40
   },
   listitem: {
-    paddingRight: theme.spacing(2)
+    marginRight: theme.spacing(2),
+    minWidth: 24,
+    minHeight: 24,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   ul: {
     listStyle: 'none'
@@ -43,6 +48,11 @@ const useStyles = makeStyles(theme => ({
   prompt: {
     width: '100%',
     textAlign: 'center'
+  },
+  self: {
+    '& > span': {
+      fontWeight: 700
+    }
   }
 }))
 export const Ingame = props => {
@@ -83,15 +93,25 @@ export const Ingame = props => {
           <Grid item container justify="center">
             <Paper className={classes.paper}>
               <List>
-                {props.players.map((player, idx) => (
-                  <ListItem key={player.id} justify="space-between">
-                    <ListItemText
-                      className={classes.listitem}
-                      primary={idx + 1}
-                    />
-                    <ListItemText primary={player.name} />
-                  </ListItem>
-                ))}
+                {props.players.map((player, idx) => {
+                  const isTurn = props.curPlayer === idx
+                  const isSelf = props.user.id === player.id
+                  return (
+                    <ListItem key={player.id} justify="space-between">
+                      <div className={classes.listitem}>
+                        {isTurn ? (
+                          <i className="material-icons">keyboard_arrow_right</i>
+                        ) : (
+                          <span>{idx + 1}</span>
+                        )}
+                      </div>
+                      <ListItemText
+                        primary={player.name}
+                        className={isSelf ? classes.self : ''}
+                      />
+                    </ListItem>
+                  )
+                })}
               </List>
             </Paper>
           </Grid>
