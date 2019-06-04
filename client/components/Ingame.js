@@ -21,7 +21,8 @@ const useStyles = makeStyles(theme => ({
     maxWidth: 800
   },
   fab: {
-    margin: theme.spacing(1)
+    margin: theme.spacing(1),
+    minWidth: 40
   },
   listitem: {
     paddingRight: theme.spacing(2)
@@ -50,7 +51,7 @@ export const Ingame = props => {
   return (
     <Paper className={classes.root}>
       <Grid item container spacing={2} xs={12}>
-        <Grid item container xs={1} alignItems="center">
+        <Grid item container xs={2} sm={1} alignItems="center" justify="center">
           <Fab
             size="small"
             onClick={() => {
@@ -64,7 +65,7 @@ export const Ingame = props => {
             <NavBackIcon />
           </Fab>
         </Grid>
-        <Grid item container xs={11}>
+        <Grid item container xs={10} sm={11}>
           {/*prompt space */}
           <Paper className={classes.prompt}>
             <p>{props.prompt}</p>

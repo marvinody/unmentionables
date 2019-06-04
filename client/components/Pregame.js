@@ -18,7 +18,8 @@ const useStyles = makeStyles(theme => ({
     maxWidth: 800
   },
   fab: {
-    margin: theme.spacing(1)
+    margin: theme.spacing(1),
+    minWidth: 40
   },
   listitem: {
     paddingRight: theme.spacing(2)
